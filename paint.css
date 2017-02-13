@@ -23,6 +23,10 @@ input {
   background-color: black;
 }
 
+#min, #med, #max {
+  width: 75px;
+}
+
 canvas {
   border-width: 1;
   border: solid;

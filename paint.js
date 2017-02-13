@@ -1,13 +1,14 @@
 /* Asociamos función canvasApp a carga de página */
-window.addEventListener('load', canvasApp, false);	
+window.addEventListener('load', canvasApp, false);
 
-function canvasApp(){  
+function canvasApp(){
     /* Inicializamos el canvas */
 	var theCanvas = document.getElementById('canvas');
 	var context = theCanvas.getContext('2d');
 
     /* Inicializamos el valor del color */
 	var colorChosen = document.getElementById("color_chosen");
+	var radioChose = document.getElementById('radio_chosen');
 
     /* Tomamos los botones de colores por su id */
 	var redButton = document.getElementById("Red");
@@ -15,6 +16,11 @@ function canvasApp(){
 	var blueButton = document.getElementById("Blue");
 	var blackButton = document.getElementById("Black");
 	var whiteButton = document.getElementById("White");
+
+	var minButton = document.getElementById('min');
+	var medButton = document.getElementById('med');
+	var maxButton = document.getElementById('max');
+
     /* Asociamos función colorPressed a pulsación de botón */
     redButton.addEventListener('click', colorPressed, false);
     greenButton.addEventListener('click', colorPressed, false);
@@ -22,14 +28,23 @@ function canvasApp(){
     blackButton.addEventListener('click', colorPressed, false);
     whiteButton.addEventListener('click', colorPressed, false);
 
+		minButton.addEventListener('click', radiusSelected, false);
+		medButton.addEventListener('click', radiusSelected, false);
+		maxButton.addEventListener('click', radiusSelected, false);
+
     function colorPressed(e) {
 	  var color_button_selected = e.target;
 	  var color_id = color_button_selected.getAttribute('id');
 	  colorChosen.innerHTML = color_id;
     }
 
+		function radiusSelected(e){
+			var radio_id = e.target.getAttribute('id');
+			radio_chosen.innerHTML = radio_id;
+		}
+
     /* Botón de reseteo */
-	var resetButton = document.getElementById("reset_image");
+		var resetButton = document.getElementById("reset_image");
     resetButton.addEventListener('click', resetPressed, false);
 
     /* Asociamos función colorPressed a pulsación de botón */
@@ -41,7 +56,7 @@ function canvasApp(){
     // For the mouse_moved event handler.
     var begin_drawing = false;
 
- 	drawScreen();
+ 		drawScreen();
 
     function drawScreen() {
 	  theCanvas.addEventListener('mousedown', mouse_pressed_down, false);
@@ -59,16 +74,27 @@ function canvasApp(){
     }
 
     function mouse_moved(ev) {
-	  var x, y;	
+	  var x, y;
+		var radius;
 	  // Get the mouse position in the canvas
-	  x = ev.pageX;
-	  y = ev.pageY;
+		x = ev.offsetX;
+		y = ev.offsetY;
+
+		if(radioChose.innerHTML == "min"){
+			radius = 1;
+		}else if(radioChose.innerHTML == "med"){
+			radius = 7;
+		}else if(radioChose.innerHTML == "max"){
+			radius = 12;
+		} else {
+			radius = 7;
+		}
 
 	  if (begin_drawing) {
 	    context.beginPath();
-	    context.arc(x, y, 7, (Math.PI/180)*0, (Math.PI/180)*360, false);
+	    context.arc(x, y, radius, (Math.PI/180)*0, (Math.PI/180)*360, false);
 	    context.fill();
         context.closePath();
 	  }
-    }
+  }
 }
